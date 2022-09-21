@@ -60,12 +60,7 @@ def get_sales():
             next_page_url = base_url+'?page='+str((curr_page+1))
             new_data = requests.get(next_page_url).json()['payload']
             curr_page = requests.get(next_page_url).json()['payload']['page']
-        for store in new_data['sales']:
-            sales_list.append(store)
-
-        new_data = requests.get(base_url + '?page='+str(max_page)).json()['payload']
-        for store in new_data['sales']:
-            sales_list.append(store)
+            sales_list.extend(new_data['sales'])
 
         df = pd.DataFrame(sales_list)
         df.to_csv(filename)
